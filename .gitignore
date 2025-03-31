@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+dist/
+build/
+dev-dist
+# intellij stuff
+.idea/
+examples/**/pnpm-lock.yaml
+
