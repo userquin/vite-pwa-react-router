@@ -3,10 +3,13 @@ import { defineBuildConfig } from 'unbuild'
 export default defineBuildConfig([{
   entries: [
     'src/index',
+    'src/preset',
   ],
   clean: true,
   declaration: 'node16',
   externals: [
+    '@react-router/dev',
+    '@react-router/dev/config',
     'vite',
     'vite-plugin-pwa',
     'workbox-build',
