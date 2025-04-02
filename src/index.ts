@@ -29,6 +29,6 @@ export function ReactRouterVitePWA(
     // remove the build plugin: this plugin will copy registerSW.js and webmanifest to the server build
     PWAPlugin(pwaOptions),
     SWPlugin(ctx),
-    BuildPlugin(ctx),
+    // BuildPlugin(ctx),
   ] as PluginOption
 }
