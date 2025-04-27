@@ -1,4 +1,5 @@
 import type { Preset } from '@react-router/dev/config'
+import type { VitePluginPWAAPI } from 'vite-plugin-pwa'
 
 export function ReactRouterVitePWAPreset(): Preset {
   return {
@@ -6,15 +7,10 @@ export function ReactRouterVitePWAPreset(): Preset {
     reactRouterConfig() {
       return {
         async buildEnd({ viteConfig }) {
-          // find the preset plugin and use the exposed hook
-          // eslint-disable-next-line no-console
-          console.log(viteConfig)
-          // const buildPWA = context.buildPWA
-          //
-          // if (!buildPWA)
-          //   throw new Error('Cannot find ReactRouterPWAPlugin, did you forgot to add it to the vite.config file?')
-          //
-          // await buildPWA()
+          console.log('Building PWA...')
+
+          const api: VitePluginPWAAPI | undefined = viteConfig.plugins.find(p => p.name === 'vite-plugin-pwa')?.api
+          await api?.generateSW()
         },
       }
     },

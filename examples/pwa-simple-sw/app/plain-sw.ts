@@ -9,7 +9,7 @@ import { setupRoutes } from './shared-sw'
 
 declare let self: ServiceWorkerGlobalScope
 
-const url = navigateFallback ?? '/'
+const url = navigateFallback ?? '/index.html'
 
 /// self.__WB_MANIFEST is the default injection point
 const manifest = self.__WB_MANIFEST

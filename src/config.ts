@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto'
 import { createReadStream } from 'node:fs'
 import { lstat } from 'node:fs/promises'
 import { resolve as resolvePath } from 'node:path'
+import { PresetPlugin } from './plugins/preset'
 import { SWPlugin } from './plugins/sw'
 
 export function configurePWA(
@@ -45,7 +46,10 @@ export function configurePWA(
         } */
         options.injectManifest.buildPlugins ??= {}
         options.injectManifest.buildPlugins.vite ??= []
-        options.injectManifest.buildPlugins.vite.push(SWPlugin(ctx))
+        options.injectManifest.buildPlugins.vite.push(
+          PresetPlugin(ctx),
+          SWPlugin(ctx),
+        )
 
         config = options.injectManifest
       }
@@ -138,6 +142,10 @@ function preparePWAOptions(ctx: ReactRouterPWAContext, pwaOptions: ReactRouterPW
       cleanupOutdatedCaches,
       clientsClaimMode,
     },
+  }
+
+  if (pwa.strategies === 'injectManifest') {
+    ctx.sw.navigateFallback = 'index.html'
   }
 
   return pwa

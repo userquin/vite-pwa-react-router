@@ -8,39 +8,32 @@ export function PresetPlugin(ctx: ReactRouterPWAContext) {
     applyToEnvironment(env) {
       return env.name === 'client'
     },
+    generateBundle(_, bundle) {
+      ctx.api?.generateBundle(bundle, this)
+    },
     configResolved(config) {
-      // const server =
-      //     Object.values(config.environments).find(e => e.consumer === 'server')
-      /* Object.entries(config.environments).forEach(([name, { consumer }]) => {
-        console.log(name, consumer)
-      }) */
-      if (true) {
-        // console.log(ctx.api)
-
-        // console.log(lookupContext(config))
-        try {
-          ctx.resolvedReactRouterConfig = lookupContext(config)?.reactRouterConfig
-          console.log(ctx.resolvedReactRouterConfig?.routes)
-          // console.log(ctx.resolvedReactRouterConfig)
-          // if (preset && 'pwaContext' in preset) {
-          if (ctx.resolvedReactRouterConfig) {
-            // console.log(ctx.resolvedReactRouterConfig.routes)
-            // const pwaContext = preset.pwaContext()
-            // ctx.resolvedReactRouterConfig = pwaContext.reactRouterConfig
-            /* if (build) {
-              pwaContext.buildPWA = async () => {
-                await ctx.api!.generateSW()
-              }
-            } */
-          }
-          else {
-            throw new Error('Cannot find ReactRouterPWAPreset, did you forgot to add it to the router.config file?')
-          }
+      try {
+        ctx.resolvedReactRouterConfig = lookupContext(config)?.reactRouterConfig
+        // console.log(ctx.resolvedReactRouterConfig)
+        // if (preset && 'pwaContext' in preset) {
+        if (ctx.resolvedReactRouterConfig) {
+          // console.log(ctx.resolvedReactRouterConfig.routes)
+          // const pwaContext = preset.pwaContext()
+          // ctx.resolvedReactRouterConfig = pwaContext.reactRouterConfig
+          /* if (build) {
+            pwaContext.buildPWA = async () => {
+              await ctx.api!.generateSW()
+            }
+          } */
         }
-        catch {
-          // just ignore
+        else {
+          throw new Error('Cannot find ReactRouterPWAPreset, did you forgot to add it to the router.config file?')
         }
       }
+      catch {
+        // just ignore
+      }
+      console.log(ctx.resolvedReactRouterConfig?.routes?.length)
     },
   } satisfies PluginOption
 }

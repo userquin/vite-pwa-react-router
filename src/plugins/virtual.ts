@@ -22,6 +22,8 @@ export function VirtualPlugin() {
           'workbox-window',
           'virtual:pwa-info',
           'virtual:pwa-assets/head',
+          'virtual:pwa-register',
+          'virtual:pwa-register/react',
           'virtual:vite-pwa/react-router/sw',
         )
         resolve.noExternal = noExternal

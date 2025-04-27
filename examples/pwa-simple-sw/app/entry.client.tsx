@@ -8,9 +8,17 @@ import { startTransition, StrictMode } from 'react'
 import { hydrateRoot } from 'react-dom/client'
 import { HydratedRouter } from 'react-router/dom'
 
-// something weird with import.meta.env with remix
-if (import.meta.env.VITE_PUBLIC_VIRTUAL_PWA_MODULE === 'true')
-  import('./pwa')
+import('virtual:pwa-register').then(({ registerSW }) => {
+  registerSW({
+    immediate: true,
+    onRegisteredSW(swScriptUrl) {
+      console.log('SW registered: ', swScriptUrl)
+    },
+    onOfflineReady() {
+      console.log('PWA application ready to work offline')
+    },
+  })
+})
 
 startTransition(() => {
   hydrateRoot(
