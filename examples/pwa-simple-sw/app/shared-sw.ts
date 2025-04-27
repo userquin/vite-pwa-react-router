@@ -1,15 +1,13 @@
-import type { RouteConfig } from '@react-router/dev/routes'
+import type { RouteManifest } from 'virtual:vite-pwa/react-router/sw'
 import { dynamicRoutes, staticRoutes } from 'virtual:vite-pwa/react-router/sw'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { registerRoute } from 'workbox-routing'
 import { NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
 
-export async function resolveRoutePath(r: RouteConfig) {
-  const resolvedStaticRoute = await r
-
+export async function resolveRoutePath(r: RouteManifest) {
   const routes: string[] = []
 
-  for (const route of resolvedStaticRoute) {
+  for (const route of Object.values(r)) {
     if (route.path)
       routes.push(route.path)
   }

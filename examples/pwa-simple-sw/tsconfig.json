@@ -13,7 +13,8 @@
     "types": [
       "@react-router/node",
       "vite/client",
-      "vite-plugin-pwa/client",
+      "vite-plugin-pwa/vanillajs",
+      "@vite-pwa/react-router/react-router-sw",
       "@vite-pwa/react-router"
     ],
     "allowJs": true,
