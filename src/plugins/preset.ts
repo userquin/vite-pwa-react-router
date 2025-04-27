@@ -5,33 +5,40 @@ export function PresetPlugin(ctx: ReactRouterPWAContext) {
   return {
     name: 'vite-pwa:react-router:preset:plugin',
     enforce: 'pre',
+    applyToEnvironment(env) {
+      return env.name === 'client'
+    },
     configResolved(config) {
-      console.log(config.environments)
-      try {
-        console.log(lookupContext(config))
-      }
-      catch (e) {
-        console.error('Cannot find ReactRouterPluginContext in the resolved Vite configuration: missing __reactRouterPluginContext entry!', e)
-      }
-      if (config.build.ssr) {
+      // const server =
+      //     Object.values(config.environments).find(e => e.consumer === 'server')
+      /* Object.entries(config.environments).forEach(([name, { consumer }]) => {
+        console.log(name, consumer)
+      }) */
+      if (true) {
         // console.log(ctx.api)
 
-        console.log(lookupContext(config))
-        // ctx.resolvedReactRouterConfig = lookupContext(config)?.reactRouterConfig
-        // console.log(ctx.resolvedReactRouterConfig)
-        // if (preset && 'pwaContext' in preset) {
-        if (ctx.resolvedReactRouterConfig) {
-          // console.log(ctx.resolvedReactRouterConfig.routes)
-          // const pwaContext = preset.pwaContext()
-          // ctx.resolvedReactRouterConfig = pwaContext.reactRouterConfig
-          /* if (build) {
-            pwaContext.buildPWA = async () => {
-              await ctx.api!.generateSW()
-            }
-          } */
+        // console.log(lookupContext(config))
+        try {
+          ctx.resolvedReactRouterConfig = lookupContext(config)?.reactRouterConfig
+          console.log(ctx.resolvedReactRouterConfig?.routes)
+          // console.log(ctx.resolvedReactRouterConfig)
+          // if (preset && 'pwaContext' in preset) {
+          if (ctx.resolvedReactRouterConfig) {
+            // console.log(ctx.resolvedReactRouterConfig.routes)
+            // const pwaContext = preset.pwaContext()
+            // ctx.resolvedReactRouterConfig = pwaContext.reactRouterConfig
+            /* if (build) {
+              pwaContext.buildPWA = async () => {
+                await ctx.api!.generateSW()
+              }
+            } */
+          }
+          else {
+            throw new Error('Cannot find ReactRouterPWAPreset, did you forgot to add it to the router.config file?')
+          }
         }
-        else {
-          throw new Error('Cannot find ReactRouterPWAPreset, did you forgot to add it to the router.config file?')
+        catch {
+          // just ignore
         }
       }
     },
