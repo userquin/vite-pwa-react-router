@@ -7,7 +7,7 @@ const RESOLVED_VIRTUAL_REACT_ROUTER_SW = `\0${VIRTUAL_REACT_ROUTER_SW}`
 export function SWPlugin(ctx: ReactRouterPWAContext) {
   return {
     name: 'vite-pwa:react-router:sw:plugin',
-    enforce: 'pre',
+    enforce: 'post',
     resolveId(id, _, options) {
       return !options.ssr && id === VIRTUAL_REACT_ROUTER_SW
         ? RESOLVED_VIRTUAL_REACT_ROUTER_SW
@@ -25,7 +25,8 @@ export function SWPlugin(ctx: ReactRouterPWAContext) {
         } = ctx.sw
 
         // todo: check if react router has some utility helper for this
-        const allRoutes = Object.values(ctx.resolvedConfig.routes).filter((r) => {
+        const routes = ctx.resolvedReactRouterConfig?.routes ?? []
+        const allRoutes = Object.values(routes).filter((r) => {
           return r.index !== true && r.id !== 'root'
         })
         const staticRoutes = allRoutes.filter(r => r.path && !r.path.includes(':'))
@@ -34,7 +35,7 @@ export function SWPlugin(ctx: ReactRouterPWAContext) {
         // todo: convert routes to a more usable format
         // todo: maybe we need to change also the react-router-sw.d.ts at root
         return `export const version = '${version}'
-export const ssr = ${ctx.resolvedConfig.ssr}
+export const ssr = ${ctx.resolvedReactRouterConfig?.ssr}
 export const enablePrecaching = ${enablePrecaching}
 export const navigateFallback = ${JSON.stringify(navigateFallback)}
 export const clientsClaimMode = ${JSON.stringify(clientsClaimMode)}

@@ -33,3 +33,5 @@ export interface ReactRouterPWASWOptions {
 export interface ReactRouterPWAOptions extends Partial<VitePWAOptions> {
   swOptions?: ReactRouterPWASWOptions
 }
+
+export type { VitePWAOptions }
