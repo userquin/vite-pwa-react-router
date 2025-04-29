@@ -1,9 +1,10 @@
 import type { MetaFunction } from 'react-router'
+import { Link } from 'react-router'
 
 export const meta: MetaFunction = () => {
   return [
     { title: 'React Router PWA App' },
-    { name: 'description', content: 'Welcome to React PWA!' },
+    { name: 'description', content: 'Welcome to React Router PWA!' },
   ]
 }
 
@@ -12,9 +13,9 @@ export default function Index() {
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8', textAlign: 'center' }}>
       <h1>Welcome to PWA React Router</h1>
       <pre>{import.meta.env.VITE_BUILD_DATE}</pre>
-      <a href="/about">About</a>
+      <Link to="/about">About</Link>
       <br />
-      <a href="/hi/Dummy">Hi Dummy</a>
+      <Link to="/hi/Dummy">Hi Dummy</Link>
     </div>
   )
 }

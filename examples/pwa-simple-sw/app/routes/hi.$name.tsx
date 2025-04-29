@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 
 interface Params {
   name: string
@@ -15,7 +15,7 @@ export default function Hi() {
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8', textAlign: 'center' }}>
-      <h1>Hi PWA ReactRouter</h1>
+      <h1>Hi React Router PWA</h1>
       <div>
         <strong>/hi</strong>
         {' '}
@@ -27,7 +27,7 @@ export default function Hi() {
         {params.name}
       </p>
       <br />
-      <a href="/">Go Home</a>
+      <Link to="/">Go Home</Link>
     </div>
   )
 }
