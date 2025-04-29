@@ -1,19 +1,19 @@
 import { PWAManifest } from '@vite-pwa/react-router/components'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 
-if (!import.meta.env.SSR) {
-  import('virtual:pwa-register').then(({ registerSW }) => {
-    registerSW({
-      immediate: true,
-      onRegisteredSW(swScriptUrl) {
-        console.log('SW registered: ', swScriptUrl)
-      },
-      onOfflineReady() {
-        console.log('PWA application ready to work offline')
-      },
-    })
+// if (!import.meta.env.SSR) {
+import('virtual:pwa-register').then(({ registerSW }) => {
+  registerSW({
+    immediate: true,
+    onRegisteredSW(swScriptUrl) {
+      console.log('SW registered: ', swScriptUrl)
+    },
+    onOfflineReady() {
+      console.log('PWA application ready to work offline')
+    },
   })
-}
+})
+// }
 
 export function Layout({ children }: { children: React.ReactNode }) {
   // const data = useLoaderData<typeof loader>()

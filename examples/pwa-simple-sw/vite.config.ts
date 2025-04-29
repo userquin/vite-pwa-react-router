@@ -1,6 +1,7 @@
 import { reactRouter } from '@react-router/dev/vite'
 import { ReactRouterVitePWAPlugin } from '@vite-pwa/react-router'
 import { defineConfig } from 'vite'
+import Inspect from 'vite-plugin-inspect'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 // for testing purposes only
@@ -78,5 +79,6 @@ export default defineConfig({
         },
       },
     }),
+    Inspect(),
   ],
 })
