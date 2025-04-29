@@ -3,7 +3,7 @@ import type { MetaFunction } from 'react-router'
 export const meta: MetaFunction = () => {
   return [
     { title: 'React Router PWA App' },
-    { name: 'description', content: 'Welcome to Remix PWA!' },
+    { name: 'description', content: 'Welcome to React PWA!' },
   ]
 }
 
