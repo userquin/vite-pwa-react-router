@@ -1,17 +1,9 @@
-import { Link, useLoaderData } from 'react-router'
-
-interface Params {
-  name: string
-}
-
-export function loader({ params }: { params: Params }) {
-  return params
-}
+import { Link, useParams } from 'react-router'
 
 const date = import.meta.env.VITE_BUILD_DATE
 
 export default function Hi() {
-  const params = useLoaderData<typeof loader>()
+  const params = useParams<'name'>()
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.8', textAlign: 'center' }}>
