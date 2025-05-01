@@ -6,4 +6,4 @@ dev-dist
 # intellij stuff
 .idea/
 examples/**/pnpm-lock.yaml
-
+.react-router/

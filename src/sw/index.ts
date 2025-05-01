@@ -55,7 +55,7 @@ export function setupPwa(options: PwaOptions = {}) {
     const manifest = options.manifest ?? []
     if (import.meta.env.DEV) {
       if (navigateFallback)
-        manifest.push({ url: navigateFallback, revision: Math.random().toString() })
+        manifest.push({ url: '/', revision: Math.random().toString() })
     }
     precacheAndRoute(manifest)
   }
@@ -64,7 +64,9 @@ export function setupPwa(options: PwaOptions = {}) {
     cleanCaches()
 
   if (navigateFallback) {
-    registerRoute(new NavigationRoute(createHandlerBoundToURL(navigateFallback), {
+    registerRoute(new NavigationRoute(createHandlerBoundToURL(
+      import.meta.env.DEV ? '/' : navigateFallback,
+    ), {
       allowlist: [/^\/$/],
     }))
   }

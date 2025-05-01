@@ -17,11 +17,13 @@ export interface ResolvedPWASWOptions {
   injectManifest: Required<ReactRouterPWAInjectManifest>
 }
 
+export type ResolvedReactRouterConfig = Parameters<NonNullable<Preset['reactRouterConfigResolved']>>['0']['reactRouterConfig']
+
 export interface ReactRouterPWAContext {
   resolvedPWAOptions?: ResolvedVitePWAOptions
   api?: VitePluginPWAAPI
   build: boolean
   sw: ReactRouterPWASWContext
-  resolvedConfig: Parameters<NonNullable<Preset['reactRouterConfigResolved']>>['0']['reactRouterConfig']
+  resolvedReactRouterConfig: ResolvedReactRouterConfig
   options: ResolvedPWASWOptions
 }

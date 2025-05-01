@@ -1,0 +1,40 @@
+{
+  "name": "react-router-pwa-simple-sw",
+  "type": "module",
+  "private": true,
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "VIRTUAL_PWA_MODULE=true react-router dev",
+    "dev:auto": "react-router dev",
+    "dev:plain": "PLAIN_SW=true react-router dev",
+    "build": "VIRTUAL_PWA_MODULE=true react-router build",
+    "build:auto": "react-router build",
+    "build:plain": "PLAIN_SW=true react-router build",
+    "start": "react-router-serve ./build/server/index.js",
+    "start:spa": "npx serve build/client",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@react-router/node": "^7.5.3",
+    "@react-router/serve": "^7.5.3",
+    "isbot": "^5.1.17",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.5.3"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.5.3",
+    "@react-router/fs-routes": "^7.5.3",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "@vite-pwa/react-router": "workspace:*",
+    "react-router-devtools": "^1.1.10",
+    "typescript": "^5.8.2",
+    "vite": "^6.3.3",
+    "vite-plugin-inspect": "^11.0.1",
+    "vite-tsconfig-paths": "^4.2.1"
+  }
+}

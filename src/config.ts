@@ -1,10 +1,10 @@
 import type { ReactRouterPWAContext } from './context'
 import type { ReactRouterPWAOptions } from './types'
 import { createHash } from 'node:crypto'
-import { createReadStream, readFileSync } from 'node:fs'
+import { createReadStream } from 'node:fs'
 import { lstat } from 'node:fs/promises'
 import { resolve as resolvePath } from 'node:path'
-import * as process from 'node:process'
+import { PresetPlugin } from './plugins/preset'
 import { SWPlugin } from './plugins/sw'
 
 export function configurePWA(
@@ -14,10 +14,8 @@ export function configurePWA(
   const pwa = preparePWAOptions(ctx, pwaOptions)
   pwa.integration = {
     closeBundleOrder: 'post',
-    async configureOptions(viteOptions, options) {
-      ctx.resolvedConfig = await loadReactRouterConfig()
-
-      const { ssr, basename, buildDirectory } = ctx.resolvedConfig
+    async configureOptions(_viteOptions, options) {
+      // const { ssr, basename, buildDirectory } = ctx.resolvedReactRouterConfig
       let config: Partial<
         import('workbox-build').BasePartial
           & import('workbox-build').GlobPartial
@@ -40,40 +38,44 @@ export function configurePWA(
         else
           ctx.sw.enablePrecaching = true
 
-        if (ctx.sw.enablePrecaching) {
+        /* if (ctx.sw.enablePrecaching) {
           if (ssr)
             ctx.sw.navigateFallback = basename || viteOptions.base || '/'
           else
             ctx.sw.navigateFallback = 'index.html'
-        }
-        options.injectManifest.plugins ??= []
-        options.injectManifest.plugins.push(SWPlugin(ctx))
+        } */
+        options.injectManifest.buildPlugins ??= {}
+        options.injectManifest.buildPlugins.vite ??= []
+        options.injectManifest.buildPlugins.vite.push(
+          PresetPlugin(ctx),
+          SWPlugin(ctx),
+        )
 
         config = options.injectManifest
       }
       else {
         options.workbox = options.workbox ?? {}
         if (!('navigateFallback' in options.workbox)) {
-          if (ssr)
+          /* if (ssr)
             options.workbox.navigateFallback = basename ?? viteOptions.base ?? '/'
           else
-            options.workbox.navigateFallback = 'index.html'
+            options.workbox.navigateFallback = 'index.html' */
         }
 
-        if (ssr && !('navigateFallbackAllowlist' in options.workbox))
+        /* if (ssr && !('navigateFallbackAllowlist' in options.workbox))
           options.workbox.navigateFallbackAllowlist = [new RegExp(`^${options.workbox.navigateFallback}$`)]
-
+*/
         config = options.workbox
       }
 
-      if (!('globDirectory' in config))
-        config.globDirectory = `${buildDirectory}/client`
+      /* if (!('globDirectory' in config))
+        config.globDirectory = `${buildDirectory}/client` */
 
       if (!('dontCacheBustURLsMatching' in config))
         config.dontCacheBustURLsMatching = /assets\//
     },
     async beforeBuildServiceWorker(options) {
-      const { appDirectory, routes, ssr } = ctx.resolvedConfig
+      const { appDirectory, routes, ssr } = ctx.resolvedReactRouterConfig
       // we only need to handle custom build in SSR:
       // - in dev mode, the pwa plugin will do the work for us
       // - when building, we need to include the navigateFallback entry in the sw precache manifest
@@ -142,12 +144,9 @@ function preparePWAOptions(ctx: ReactRouterPWAContext, pwaOptions: ReactRouterPW
     },
   }
 
-  return pwa
-}
+  if (pwa.strategies === 'injectManifest') {
+    ctx.sw.navigateFallback = 'index.html'
+  }
 
-async function loadReactRouterConfig(): Promise<ReactRouterPWAContext['resolvedConfig']> {
-  const rootDirectory = process.env.REACT_ROUTER_ROOT ?? process.cwd()
-  const storeFilePath = `${rootDirectory}/.react-router/react-router-pwa-rotues.json`
-  const reactRouterResolvedConfig = readFileSync(storeFilePath)
-  return JSON.parse(reactRouterResolvedConfig.toString())
+  return pwa
 }

@@ -10,6 +10,7 @@ export default defineBuildConfig([{
   externals: [
     '@react-router/dev',
     '@react-router/dev/config',
+    '@react-router/dev/routes',
     'vite',
     'vite-plugin-pwa',
     'workbox-build',

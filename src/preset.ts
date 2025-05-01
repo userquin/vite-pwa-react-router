@@ -1,23 +1,18 @@
 import type { Preset } from '@react-router/dev/config'
+import type { VitePluginPWAAPI } from 'vite-plugin-pwa'
 
-export function ReactRouterPreset(): Preset {
+export function ReactRouterVitePWAPreset(): Preset {
   return {
     name: 'vite-pwa:react-router:preset',
     reactRouterConfig() {
       return {
         async buildEnd({ viteConfig }) {
-          const remixPwaBuildPlugin = viteConfig.plugins.find(plugin => plugin.name === 'vite-pwa:react-router:build')
+          console.log('Building PWA...')
 
-          if (!remixPwaBuildPlugin)
-            throw new Error('Remix PWA Plugin must be preset in vite.config')
-
-          // await remixPwaBuildPlugin.onBuildEnd()
+          const api: VitePluginPWAAPI | undefined = viteConfig.plugins.find(p => p.name === 'vite-plugin-pwa')?.api
+          await api?.generateSW()
         },
       }
-    },
-    reactRouterConfigResolved({ reactRouterConfig }) {
-      // eslint-disable-next-line no-console
-      console.log(reactRouterConfig)
     },
   }
 }

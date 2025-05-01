@@ -1,17 +1,29 @@
 import type { PluginOption } from 'vite'
 import type { ReactRouterPWAContext } from './context'
-import type { ReactRouterPWAOptions } from './types'
+import type {
+  ReactRouterPWAInjectManifest,
+  ReactRouterPWAOptions,
+  ReactRouterPWASWOptions,
+} from './types'
 import { VitePWA as PWAPlugin } from 'vite-plugin-pwa'
 import { version } from '../package.json'
 import { configurePWA } from './config'
+import { PresetPlugin } from './plugins/preset'
 import { SWPlugin } from './plugins/sw'
+import { VirtualPlugin } from './plugins/virtual'
 
-export function ReactRouterVitePWA(
+export type {
+  ReactRouterPWAInjectManifest,
+  ReactRouterPWAOptions,
+  ReactRouterPWASWOptions,
+}
+
+export function ReactRouterVitePWAPlugin(
   config: ReactRouterPWAOptions = {},
 ) {
   const ctx: ReactRouterPWAContext = {
     options: undefined!,
-    resolvedConfig: undefined!,
+    resolvedReactRouterConfig: undefined!,
     api: undefined,
     build: false,
     sw: {
@@ -25,10 +37,12 @@ export function ReactRouterVitePWA(
     },
   }
   const pwaOptions = configurePWA(ctx, config)
+  const pwaPlugin = PWAPlugin(pwaOptions)
+  ctx.api = pwaPlugin.find(p => p.name === 'vite-plugin-pwa')?.api
   return [
-    // remove the build plugin: this plugin will copy registerSW.js and webmanifest to the server build
-    PWAPlugin(pwaOptions),
+    VirtualPlugin(),
+    [...pwaPlugin.filter(p => p.name !== 'vite-plugin-pwa:build')] as PluginOption,
+    PresetPlugin(ctx),
     SWPlugin(ctx),
-    // BuildPlugin(ctx),
   ] as PluginOption
 }
